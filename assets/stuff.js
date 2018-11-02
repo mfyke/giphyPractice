@@ -46,4 +46,9 @@ var play = function(element) {
 	}
 }
 // type something in search bar to make a new button
-
+$( "#searchBar" ).submit(function( event ) {
+	event.preventDefault();
+  	topics.push($("#searchTerm").val().trim());
+  	$("#searchTerm").val("");
+  	generateButtons();
+});
