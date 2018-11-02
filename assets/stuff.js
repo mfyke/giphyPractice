@@ -20,17 +20,30 @@ var search = function(element) {
 	topic=element.id;
 	generateGifs();
 }
-// $.getJSON(query, function(data) {
-// 	console.log(data);
-// });
 // display gifs and start as stills
 var generateGifs = function() {
 	var query = "https://api.giphy.com/v1/gifs/search?api_key=" + key + "&q=" + topic + "&limit=15&offset=0&lang=en"
-	$.getJSON(query, function(data) {
-		console.log(data);
+	$.getJSON(query, function(res) {
+		console.log(res);
+		console.log(res.data.length);
+		$("#gifsArea").empty();
+		for(var i=0;i<res.data.length;i++) {
+			var badge = $("<div>").addClass("col-xs-3");
+			var gifImg = $("<img>").addClass("img-responsive").attr("data-still", res.data[i].images.fixed_height_still.url).attr("data-animate", res.data[i].images.fixed_height.url).attr("src", res.data[i].images.fixed_height_still.url).attr("onClick", "play(this)");
+			var rating =$("<h1>").text(res.data[i].rating);
+			$(badge).append(gifImg).append(rating);
+			$("#gifsArea").append(badge);
+		}
 	});
 }	
 // when gif image is clicked play the gif
-
+var play = function(element) {
+	if(element.dataset.still == element.src) {
+		element.src=element.dataset.animate;
+	}
+	else {
+		element.src=element.dataset.still;
+	}
+}
 // type something in search bar to make a new button
 
